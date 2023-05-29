@@ -1,0 +1,22 @@
+{
+  "type": "text",
+  "version": 0,
+  "headline": "",
+  "flags": {
+    "marked_for_not_publication": false,
+    "marked_for_legal": false,
+    "marked_archived_only": false,
+    "marked_for_sms": false
+  },
+  "language": "en",
+  "profile": "62655ca29fd0d480ab212d4e",
+  "pubstatus": "usable",
+  "body_html": "",
+  "format": "HTML",
+  "template": "62655bd878c574a621244be7",
+  "task": {
+    "desk": "6265586e850323a85ef8d2ec",
+    "stage": "6265586e850323a85ef8d2ea",
+    "user": "6265586c850323a85ef8d2dc"
+  }
+}
