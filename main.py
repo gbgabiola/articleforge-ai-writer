@@ -26,13 +26,14 @@ def login_db():
     return response["token"], response["user"]
 
 
-def lambda_handler(event, context):
+# Get trends data
+trends_data = requests.get(
+        "https://qa-content-api.abs-cbn.com/QA/trending/googleTrends", timeout=5)
+
+
+def lambda_handler(event):
     # Login and get token and user
     workbench_token, workbench_user = login_db()
-
-    # Get trends data
-    trends_data = requests.get(
-        "https://qa-content-api.abs-cbn.com/QA/trending/googleTrends", timeout=5)
 
     # Prepare create template
     create_template = json.load(open("create_template.json", "r"))
@@ -54,6 +55,10 @@ def lambda_handler(event, context):
             time.sleep(1)
 
     # Get the generated article
+    get_generated_article()
+
+
+def get_generated_article():
     article = requests.post(
         f"https://af.articleforge.com/api/view_article?key={ARTICLEFORGE_API_KEY}&article_id={ref_key}")
     generated_text = article.json().get("data")
@@ -79,6 +84,10 @@ def lambda_handler(event, context):
     create_template["task"]["user"] = workbench_user
 
     # Submit article to workbench
+    submit_article()
+
+
+def submit_article():
     post_response = requests.post(
         "/".join([WORKBENCH_API, "archive"]), json=create_template, headers=headers).json()
     headers["If-Match"] = post_response["_etag"]
@@ -90,3 +99,7 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': patch_response
     }
+
+lambda_handler(trends_data)
+# if __name__ == "__main__":
+#     lambda_handler(trends_data)
